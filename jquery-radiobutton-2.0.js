@@ -5,7 +5,7 @@
  * Licensed under the MIT License:
  * http://www.opensource.org/licenses/mit-license.php
  *
- * @version 2.0
+ * @version 2.1
  * @category visual
  * @package jquery
  * @subpakage ui.checkbox
@@ -13,7 +13,7 @@
  */
 
 /*
- * Edited by @joelthorner
+ * Edited by @joelthorner 2016
  * jQuery corrections and prevent duplicate plugin instances
  */
 (function() {
