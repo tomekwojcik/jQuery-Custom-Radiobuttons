@@ -11,8 +11,10 @@
  * @subpakage ui.checkbox
  * @author Tomasz Wójcik <labs@tomekwojcik.pl>
  */
+
 /*
  * Edited by @joelthorner
+ * jQuery corrections and prevent duplicate plugin instances
  */
 (function() {
     jQuery.fn.radiobutton = function(options) {
@@ -49,31 +51,50 @@
                 element.on('click', function(event) {
                     event.preventDefault();
                     event.stopPropagation();
-                    
+
                     var input = jQuery('input#' + jQuery(this).attr('name'), replacement.parent());
-                    if (input.attr('checked') === 'checked') {
-                    	input.removeAttr('checked');
-                    } else {
-                    	input.attr('checked', 'checked');
-                    }
-                    input.trigger('change');
+                    
+                    // original code
+                    // if (input.attr('checked') === 'checked') {
+                    // 	input.removeAttr('checked');
+                    // } else {
+                    // 	input.attr('checked', 'checked');
+                    // }
+                    // input.trigger('change');
+
+                    // new code
+                    input.click();
                     
                     return false;
                 });
                 
                 self.on('change', function(event) {
                     var input = jQuery(this);
-        			jQuery('a[rel="' + input.attr('name') + '"].' + settings.checkedClass).removeClass(settings.checkedClass);
         			
-        			if (input.attr('checked') === 'checked') {
-        				jQuery('a[name=' + input.attr('id') + ']', replacement.parent()).addClass(settings.checkedClass);
+                    jQuery('a[rel="' + input.attr('name') + '"].' + settings.checkedClass)
+                        .removeClass(settings.checkedClass);
+                    
+                    // original code
+                    // if (input.attr('checked') === 'checked') {
+        			
+                    // new code
+                    if (input.prop('checked')) {
+        				jQuery('a[name=' + input.attr('id') + ']', replacement.parent())
+                            .addClass(settings.checkedClass);
         			} else {
-        				jQuery('a[name=' + input.attr('id') + ']', replacement.parent()).removeClass(settings.checkedClass);
-        			} // eof if()
+        				jQuery('a[name=' + input.attr('id') + ']', replacement.parent())
+                            .removeClass(settings.checkedClass);
+        			}
                 });
                 
-                self.css({ 'position': 'absolute', 'top': '-200px', 'left': '-200px'}).before(replacement);
-                replacement.parent().css('overflow', 'hidden');
+                self.css({ 
+                    'position': 'absolute', 
+                    'top': '-200px', 
+                    'left': '-200px'
+                }).before(replacement);
+
+                replacement.parent()
+                    .css('overflow', 'hidden');
 
             }
         });
