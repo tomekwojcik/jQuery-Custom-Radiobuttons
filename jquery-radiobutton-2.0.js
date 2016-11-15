@@ -11,6 +11,9 @@
  * @subpakage ui.checkbox
  * @author Tomasz Wójcik <labs@tomekwojcik.pl>
  */
+/*
+ * Edited by @joelthorner
+ */
 (function() {
     jQuery.fn.radiobutton = function(options) {
         options = options || {};
@@ -23,47 +26,56 @@
     	var settings = jQuery.extend(defaults, options || {});
     	
     	return this.each(function() {
-    	   var self = $(this);
-    	   
-    	   var replacement = jQuery(
-    			'<div class="' + settings.className + '-wrapper">' +
-    				'<a class="' + settings.className + '" href="#" name="' + self.attr('id') + '" rel="' + self.attr('name') + '"></a>' + 
-    			'</div>'
-    		);
-    		var element = jQuery('a', replacement);
-    		
-            if (self.attr('checked') === 'checked') {
-                element.addClass(settings.checkedClass);
-            }
-            
-            element.on('click', function(event) {
-                event.preventDefault();
-                event.stopPropagation();
-                
-                var input = jQuery('input#' + jQuery(this).attr('name'), replacement.parent());
-                if (input.attr('checked') === 'checked') {
-                	input.removeAttr('checked');
-                } else {
-                	input.attr('checked', 'checked');
+    	    var self = $(this);
+
+            // prevent duplicate init of plugin in same node
+            var data = self.data("radiobutton");
+            if (!data){
+               
+                var replacement = jQuery(
+                    '<div class="' + settings.className + '-wrapper">' +
+                        '<a data-radiobutton="radiobutton-link" class="' + settings.className + '" href="#" name="' + self.attr('id') + '" rel="' + self.attr('name') + '"></a>' + 
+                    '</div>'
+                );
+
+        	   self.data('radiobutton', 'radiobutton');
+
+        		var element = jQuery('a', replacement);
+        		
+                if (self.attr('checked') === 'checked') {
+                    element.addClass(settings.checkedClass);
                 }
-                input.trigger('change');
                 
-                return false;
-            });
-            
-            self.on('change', function(event) {
-                var input = jQuery(this);
-    			jQuery('a[rel="' + input.attr('name') + '"].' + settings.checkedClass).removeClass(settings.checkedClass);
-    			
-    			if (input.attr('checked') === 'checked') {
-    				jQuery('a[name=' + input.attr('id') + ']', replacement.parent()).addClass(settings.checkedClass);
-    			} else {
-    				jQuery('a[name=' + input.attr('id') + ']', replacement.parent()).removeClass(settings.checkedClass);
-    			} // eof if()
-            });
-            
-            self.css({ 'position': 'absolute', 'top': '-200px', 'left': '-200px'}).before(replacement);
-            replacement.parent().css('overflow', 'hidden');
+                element.on('click', function(event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    
+                    var input = jQuery('input#' + jQuery(this).attr('name'), replacement.parent());
+                    if (input.attr('checked') === 'checked') {
+                    	input.removeAttr('checked');
+                    } else {
+                    	input.attr('checked', 'checked');
+                    }
+                    input.trigger('change');
+                    
+                    return false;
+                });
+                
+                self.on('change', function(event) {
+                    var input = jQuery(this);
+        			jQuery('a[rel="' + input.attr('name') + '"].' + settings.checkedClass).removeClass(settings.checkedClass);
+        			
+        			if (input.attr('checked') === 'checked') {
+        				jQuery('a[name=' + input.attr('id') + ']', replacement.parent()).addClass(settings.checkedClass);
+        			} else {
+        				jQuery('a[name=' + input.attr('id') + ']', replacement.parent()).removeClass(settings.checkedClass);
+        			} // eof if()
+                });
+                
+                self.css({ 'position': 'absolute', 'top': '-200px', 'left': '-200px'}).before(replacement);
+                replacement.parent().css('overflow', 'hidden');
+
+            }
         });
     };
 })();
