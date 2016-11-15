@@ -36,7 +36,7 @@
                
                 var replacement = jQuery(
                     // joel: add original input classes :S
-                    '<div class="' + settings.className + '-wrapper '+ self.attr('class') +'">' +
+                    '<div class="' + settings.className + '-wrapper '+ ((self.attr('class'))? self.attr('class'):'' ) +'">' +
                         '<a data-radiobutton="radiobutton-link" class="' + settings.className + '" href="#" name="' + self.attr('id') + '" rel="' + self.attr('name') + '"></a>' + 
                     '</div>'
                 );
