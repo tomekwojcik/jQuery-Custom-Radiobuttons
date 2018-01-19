@@ -90,8 +90,8 @@
                 
                 self.css({ 
                     'position': 'absolute', 
-                    'top': '-200px', 
-                    'left': '-200px'
+                    'top': '-5px', 
+                    'left': '-5px'
                 }).before(replacement);
 
                 replacement.parent()
